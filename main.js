@@ -16,7 +16,7 @@ for (let key of keys) {
             input = input.slice(0, -1);
             display_input = CleanInput(input);
         } else if (value == "=") {
-            let result = eval(input);
+            let result = eval(PrepareInput(input));
             display_output.innerHTML = CleanOutput(result);
         } else if (value == "brackets") {
             if (
@@ -32,7 +32,7 @@ for (let key of keys) {
                 input.indexOf(")") != -1 &&
                 input.lastIndexOf("(") > input.lastIndexOf(")")
             ) {
-                input += ")"
+                input += ")";
             }
             display_input.innerHTML = CleanInput(input);
         } else {
@@ -106,4 +106,15 @@ function ValidadeInput(value) {
     }
 
     return true;
+}
+
+function PrepareInput(input) {
+    let input_array = input.split("");
+
+    for (i = 0; i < input_array.length; i++){ //funcao criada para tratar do erro do % onde não se dividia, mas agora se divide por cem, independentemente de onde se coloque o %
+        if (input_array[i] == "%") {
+            input_array[i] = "/100";
+        }
+    }
+    return input_array.join("");
 }
